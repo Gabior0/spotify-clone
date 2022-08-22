@@ -1,12 +1,17 @@
+import { IMusisc } from './../interfaces/IMusic';
+import { Router } from '@angular/router';
 import { IUser } from './../interfaces/IUser';
 import { SpotifyConfiguration } from './../../environments/environment.prod';
 import { Injectable } from '@angular/core';
 import Spotify from 'spotify-web-api-js';
 import {
+  SportifyArtistForArtist,
   SpotifyPlaylistForPlaylist,
+  SpotifyTrackForMusic,
   SpotifyUserForUser,
 } from '../pages/common/spotifyHelper';
 import { IPlaylist } from '../interfaces/IPlaylist';
+import { IArtits } from '../interfaces/IArtist';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +20,7 @@ export class SpotifyService {
   spotifyApi: Spotify.SpotifyWebApiJs = null;
   user: IUser;
 
-  constructor() {
+  constructor(private router: Router) {
     this.spotifyApi = new Spotify();
   }
 
@@ -38,7 +43,6 @@ export class SpotifyService {
   async getSpotifyUser() {
     const userInfo = await this.spotifyApi.getMe();
     this.user = SpotifyUserForUser(userInfo);
-    console.log(this.user.identify);
   }
 
   getUrlLogin() {
@@ -64,11 +68,29 @@ export class SpotifyService {
 
   async searchPlaylistUser(offset = 0, limit = 50): Promise<IPlaylist[]> {
     const playlists = await this.spotifyApi.getUserPlaylists(
-      // this.user.identify,
-      '12148053701',
+      this.user.identify,
       { offset, limit }
     );
-    console.log(playlists);
     return playlists.items.map(SpotifyPlaylistForPlaylist);
+  }
+
+  async searchTopArtists(limit = 10): Promise<IArtits[]> {
+    const artitis = await this.spotifyApi.getMyTopArtists({ limit });
+    return artitis.items.map(SportifyArtistForArtist);
+  }
+
+  async searchMusics(offset = 0, limit = 50): Promise<IMusisc[]> {
+    const musics = await this.spotifyApi.getMySavedTracks({ offset, limit });
+    return musics.items.map((x) => SpotifyTrackForMusic(x.track));
+  }
+
+  async playMusic(musicID: string) {
+    await this.spotifyApi.queue(musicID);
+    await this.spotifyApi.skipToNext();
+  }
+
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['/login']);
   }
 }

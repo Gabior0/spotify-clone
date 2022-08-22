@@ -23,13 +23,11 @@ export class AuthenticatedGuard implements CanLoad {
       return this.notAuthenticated();
     }
 
-    return new Promise((res) => {
-      const userCreated = this.spotifyService.startUser();
+    return new Promise(async (res) => {
+      const userCreated = await this.spotifyService.startUser();
       if (userCreated) res(true);
       else res(this.notAuthenticated());
     });
-
-    return true;
   }
 
   notAuthenticated() {

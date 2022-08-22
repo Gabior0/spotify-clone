@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { SpotifyService } from './../../../services/spotify.service';
 import { IPlaylist } from './../../../interfaces/IPlaylist';
 import { Component, OnInit } from '@angular/core';
@@ -24,7 +25,7 @@ export class LeftBoardComponent implements OnInit {
   artistIcon = faGuitar;
   playListIcon = faMusic;
 
-  constructor(private spotifyService: SpotifyService) {}
+  constructor(private spotifyService: SpotifyService, private router: Router) {}
 
   ngOnInit(): void {
     this.searchPlaylists();
@@ -32,6 +33,7 @@ export class LeftBoardComponent implements OnInit {
 
   clickButton(button: string) {
     this.selectedMenu = button;
+    this.router.navigateByUrl('/player/home');
   }
 
   async searchPlaylists() {
