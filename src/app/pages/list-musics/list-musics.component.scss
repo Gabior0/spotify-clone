@@ -1,5 +1,4 @@
-@import "table";
-@import "variables.scss";
+@import "table.scss";
 
 :host {
   display: flex;
@@ -17,7 +16,7 @@
     }
   }
 
-  .my-musics {
+  .list {
     padding: 0px 50px;
     padding-bottom: 20px;
     width: 100%;

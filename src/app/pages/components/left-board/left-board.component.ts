@@ -39,4 +39,9 @@ export class LeftBoardComponent implements OnInit {
   async searchPlaylists() {
     this.playlists = await this.spotifyService.searchPlaylistUser();
   }
+
+  goToPlaylist(playlistId: string) {
+    this.selectedMenu = playlistId;
+    this.router.navigateByUrl(`player/list/playlist/${playlistId}`);
+  }
 }

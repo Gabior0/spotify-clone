@@ -7,6 +7,7 @@ import Spotify from 'spotify-web-api-js';
 import {
   SportifyArtistForArtist,
   SpotifyPlaylistForPlaylist,
+  SpotifySinglePlaylistForPlaylist,
   SpotifyTrackForMusic,
   SpotifyUserForUser,
 } from '../pages/common/spotifyHelper';
@@ -74,6 +75,24 @@ export class SpotifyService {
     return playlists.items.map(SpotifyPlaylistForPlaylist);
   }
 
+  async searchMusicsPlaylist(playlistId: string, offset = 0, limit = 50) {
+    const playlistSpotify = await this.spotifyApi.getPlaylist(playlistId);
+
+    if (!playlistSpotify) return null;
+
+    const playlist = SpotifySinglePlaylistForPlaylist(playlistSpotify);
+
+    const musicsSpotify = await this.spotifyApi.getPlaylistTracks(playlistId, {
+      offset,
+      limit,
+    });
+    playlist.musics = musicsSpotify.items.map((music) =>
+      SpotifyTrackForMusic(music.track as SpotifyApi.TrackObjectFull)
+    );
+
+    return playlist;
+  }
+
   async searchTopArtists(limit = 10): Promise<IArtits[]> {
     const artitis = await this.spotifyApi.getMyTopArtists({ limit });
     return artitis.items.map(SportifyArtistForArtist);
@@ -86,6 +105,19 @@ export class SpotifyService {
 
   async playMusic(musicID: string) {
     await this.spotifyApi.queue(musicID);
+    await this.spotifyApi.skipToNext();
+  }
+
+  async getCurrentMusic(): Promise<IMusisc> {
+    const musicSpotify = await this.spotifyApi.getMyCurrentPlayingTrack();
+    return SpotifyTrackForMusic(musicSpotify.item);
+  }
+
+  async backMusic() {
+    await this.spotifyApi.skipToPrevious();
+  }
+
+  async nextMusic() {
     await this.spotifyApi.skipToNext();
   }
 

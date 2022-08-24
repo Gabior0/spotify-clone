@@ -3,6 +3,7 @@ import { IArtits } from './../../interfaces/IArtist';
 import { IPlaylist } from './../../interfaces/IPlaylist';
 import { IUser } from './../../interfaces/IUser';
 import { addMilliseconds, format } from 'date-fns';
+import { newMusic, newPlaylist } from './factories';
 
 export function SpotifyUserForUser(
   user: SpotifyApi.CurrentUsersProfileResponse
@@ -24,6 +25,19 @@ export function SpotifyPlaylistForPlaylist(
   };
 }
 
+export function SpotifySinglePlaylistForPlaylist(
+  playlist: SpotifyApi.SinglePlaylistResponse
+): IPlaylist {
+  if (!playlist) return newPlaylist();
+
+  return {
+    identificationPlaylist: playlist.id,
+    namePlaylist: playlist.name,
+    imageUrlPlaylist: playlist.images.shift().url,
+    musics: [],
+  };
+}
+
 export function SportifyArtistForArtist(
   spotifiArtist: SpotifyApi.ArtistObjectFull
 ): IArtits {
@@ -38,6 +52,8 @@ export function SportifyArtistForArtist(
 export function SpotifyTrackForMusic(
   spotifyTrack: SpotifyApi.TrackObjectFull
 ): IMusisc {
+  if (!spotifyTrack) return newMusic();
+
   const msToMinutes = (ms: number) => {
     const date = addMilliseconds(new Date(0), ms);
     return format(date, 'mm:ss');

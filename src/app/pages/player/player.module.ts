@@ -1,3 +1,9 @@
+import { BannerComponent } from './../components/banner/banner.component';
+import { ListMusicsComponent } from './../list-musics/list-musics.component';
+import { PlayerCardComponent } from './../components/player-card/player-card.component';
+import { ArtistItemImageComponent } from './../components/artist-item-image/artist-item-image.component';
+import { TopArtistsComponent } from './../components/top-artists/top-artists.component';
+import { RecentSearchesComponent } from './../components/recent-searches/recent-searches.component';
 import { RightBoardComponent } from './../components/right-board/right-board.component';
 import { TopArtistComponent } from './../components/top-artist/top-artist.component';
 import { HomeComponent } from './../home/home.component';
@@ -10,6 +16,7 @@ import { PlayerComponent } from './../player/player.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,11 +27,18 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HomeComponent,
     TopArtistComponent,
     RightBoardComponent,
+    RecentSearchesComponent,
+    TopArtistsComponent,
+    ArtistItemImageComponent,
+    PlayerCardComponent,
+    ListMusicsComponent,
+    BannerComponent,
   ],
   imports: [
     CommonModule,
     FontAwesomeModule,
     RouterModule.forChild(playerRotes),
+    FormsModule,
   ],
 })
 export class PlayerModule {}
