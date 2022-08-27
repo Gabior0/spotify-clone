@@ -1,3 +1,4 @@
+import { IArtits } from './../../interfaces/IArtist';
 import { PlayerService } from './../../services/player.service';
 import { SpotifyService } from 'src/app/services/spotify.service';
 import { Subscription } from 'rxjs';
@@ -16,6 +17,7 @@ export class ListMusicsComponent implements OnInit, OnDestroy {
   bannerImageUrl = '';
   bannerText = '';
 
+  artists: IArtits;
   musics: IMusisc[] = [];
   currentMusic: IMusisc = newMusic();
   playIcon = faPlay;
@@ -58,11 +60,16 @@ export class ListMusicsComponent implements OnInit, OnDestroy {
   }
 
   async getPageData(type: string, id: string) {
+    console.log(type);
     if (type == 'playlist') await this.getPlaylistData(id);
-    else await this.getArtistData(id);
+    else if (type == 'artist') {
+      // console.log('acessou');
+      await this.getArtistData(id);
+    }
   }
 
   async getPlaylistData(playlistId: string) {
+    console.log('acessou');
     const playlistMusics = await this.spotifyService.searchMusicsPlaylist(
       playlistId
     );
@@ -75,14 +82,16 @@ export class ListMusicsComponent implements OnInit, OnDestroy {
   }
 
   async getArtistData(artistId: string) {
-    const playlistMusics = await this.spotifyService.searchMusicsPlaylist(
+    const playlistMusics = await this.spotifyService.searchMusicsArtist(
       artistId
     );
-    this.setDataPage(
-      playlistMusics.namePlaylist,
-      playlistMusics.imageUrlPlaylist,
-      playlistMusics.musics
-    );
+    const artist = await this.spotifyService.getArtist(artistId);
+    const artistImage = artist.images
+      .sort((a, b) => a.width - b.width)
+      .pop().url;
+    console.log(this.artists);
+    this.setDataPage(artist.name, artistImage, playlistMusics);
+    this.title = 'Musicas : ' + artist.name;
   }
 
   setDataPage(bannerText: string, bannerImage: string, musics: IMusisc[]) {

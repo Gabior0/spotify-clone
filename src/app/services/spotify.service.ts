@@ -21,6 +21,8 @@ export class SpotifyService {
   spotifyApi: Spotify.SpotifyWebApiJs = null;
   user: IUser;
 
+  pause = true;
+
   constructor(private router: Router) {
     this.spotifyApi = new Spotify();
   }
@@ -93,9 +95,31 @@ export class SpotifyService {
     return playlist;
   }
 
+  async getArtist(artistID: string) {
+    const artist = this.spotifyApi.getArtist(artistID);
+    return artist;
+  }
+
+  async searchMusicsArtist(playlistId: string, offset = 0, limit = 50) {
+    const artistTopTracks = await this.spotifyApi.getArtistTopTracks(
+      playlistId,
+      'US'
+    );
+
+    if (!artistTopTracks) return null;
+
+    const topTracksMusics = artistTopTracks.tracks.map((music) =>
+      SpotifyTrackForMusic(music as SpotifyApi.TrackObjectFull)
+    );
+    // const topTracksMusics = artistTopTracks.tracks.map.TopTracksForTracks(artistTopTracks);
+    const tracks = topTracksMusics;
+
+    return tracks;
+  }
+
   async searchTopArtists(limit = 10): Promise<IArtits[]> {
-    const artitis = await this.spotifyApi.getMyTopArtists({ limit });
-    return artitis.items.map(SportifyArtistForArtist);
+    const artist = await this.spotifyApi.getMyTopArtists({ limit });
+    return artist.items.map(SportifyArtistForArtist);
   }
 
   async searchMusics(offset = 0, limit = 50): Promise<IMusisc[]> {
@@ -115,6 +139,16 @@ export class SpotifyService {
 
   async backMusic() {
     await this.spotifyApi.skipToPrevious();
+  }
+
+  async PausePlayMusic() {
+    if (!this.pause) {
+      await this.spotifyApi.pause();
+      this.pause = true;
+    } else {
+      await this.spotifyApi.play();
+      this.pause = false;
+    }
   }
 
   async nextMusic() {

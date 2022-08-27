@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 export class PlayerService {
   currentSound = new BehaviorSubject<IMusisc>(newMusic());
   timerId: any = null;
+  pausePlay: boolean;
 
   constructor(private spotifyService: SpotifyService) {
     this.getCurrentMusic();
@@ -34,6 +35,11 @@ export class PlayerService {
 
   async backMusic() {
     await this.spotifyService.backMusic();
+  }
+
+  async PausePlayMusic() {
+    await this.spotifyService.PausePlayMusic();
+    this.pausePlay = this.spotifyService.pause;
   }
 
   async nextMusic() {

@@ -1,6 +1,7 @@
 import { IArtits } from './../../../interfaces/IArtist';
 import { SpotifyService } from './../../../services/spotify.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-top-artists',
@@ -9,8 +10,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TopArtistsComponent implements OnInit {
   artists: IArtits[] = [];
+  selectedMenu = 'Inicio';
 
-  constructor(private spotifyService: SpotifyService) {}
+  constructor(private spotifyService: SpotifyService, private router: Router) {}
 
   ngOnInit(): void {
     this.getTopArtists();
@@ -18,5 +20,10 @@ export class TopArtistsComponent implements OnInit {
 
   async getTopArtists() {
     this.artists = await this.spotifyService.searchTopArtists(5);
+  }
+
+  goToArtists(artistId: string) {
+    this.selectedMenu = artistId;
+    this.router.navigateByUrl(`player/list/artist/${artistId}`);
   }
 }

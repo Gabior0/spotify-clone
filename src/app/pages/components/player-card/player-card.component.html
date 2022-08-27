@@ -7,6 +7,18 @@
     <span>{{ music.titleMusic }}</span>
     <div class="buttons">
       <fa-icon [icon]="beforeIcon" (click)="backMusic()"> </fa-icon>
+      <fa-icon
+        [icon]="pauseIcon"
+        (click)="pauseMusic()"
+        [class.none]="pausePlay == false"
+      >
+      </fa-icon>
+      <fa-icon
+        [icon]="playIcon"
+        (click)="pauseMusic()"
+        [class.none]="pausePlay == true"
+      >
+      </fa-icon>
       <fa-icon [icon]="afterIcon" (click)="nextMusic()"> </fa-icon>
     </div>
   </div>

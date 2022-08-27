@@ -3,6 +3,7 @@
   *ngFor="let artist of artists"
   class="mt-1"
   [imageSrc]="artist.imageUrlArtist"
+  (click)="goToArtists(artist.identifyArtist)"
 >
   {{ artist.nameArtist }}
 </app-artist-item-image>
