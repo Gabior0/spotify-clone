@@ -1,0 +1,63 @@
+@import "table.scss";
+
+:host {
+  display: flex;
+  justify-content: space-between;
+
+  ::-webkit-scrollbar {
+    width: 7px;
+    &-thumb {
+      background-color: rgba($primary-color, 0.2);
+      border-radius: 10px;
+    }
+
+    &-track {
+      background: transparent;
+    }
+  }
+
+  .list {
+    padding: 0px 50px;
+    padding-bottom: 20px;
+    width: 100%;
+    max-height: 100vh;
+    overflow-y: scroll;
+  }
+
+  .d-block {
+    display: block;
+  }
+
+  .left-board {
+    height: 100vh;
+  }
+
+  .album {
+    img {
+      max-width: 4rem;
+      border-radius: 5px;
+    }
+  }
+
+  .name {
+    margin-left: 10px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $primary-color;
+    color: $transparent-black-70;
+    text-shadow: 2px 2px 0 #bcbcbc, 2px 2px 0 #9c9c9c;
+  }
+
+  .artista {
+    img {
+      max-width: 10rem;
+      border-radius: 5px;
+    }
+    font-size: 2rem !important;
+    justify-content: center !important;
+  }
+
+  .banner {
+    cursor: pointer;
+  }
+}

@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./right-board.component.scss'],
 })
 export class RightBoardComponent implements OnInit {
-  constructor() {}
+  constructor(private router: Router) {}
+  fildSearch = '';
 
   ngOnInit(): void {}
 }

@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./recent-searches.component.scss'],
 })
 export class RecentSearchesComponent implements OnInit {
+  // selectedMenu = 'inicio';
+
   recentResearch = [
     'Top Brasil',
     'Top Global',
@@ -15,7 +18,7 @@ export class RecentSearchesComponent implements OnInit {
 
   fildSearch = '';
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -23,7 +26,7 @@ export class RecentSearchesComponent implements OnInit {
     this.fildSearch = search;
   }
 
-  seach() {
-    console.log('Buscando', this.fildSearch);
+  goToSearch(nameSearch: string) {
+    this.router.navigateByUrl(`player/search/${nameSearch}`);
   }
 }

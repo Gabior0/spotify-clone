@@ -1,9 +1,10 @@
+import { IAlbums } from './../../interfaces/IAlbums';
 import { IMusisc } from './../../interfaces/IMusic';
 import { IArtits } from './../../interfaces/IArtist';
 import { IPlaylist } from './../../interfaces/IPlaylist';
 import { IUser } from './../../interfaces/IUser';
 import { addMilliseconds, format } from 'date-fns';
-import { newMusic, newPlaylist } from './factories';
+import { newAlbum, newMusic, newPlaylist } from './factories';
 
 export function SpotifyUserForUser(
   user: SpotifyApi.CurrentUsersProfileResponse
@@ -22,6 +23,16 @@ export function SpotifyPlaylistForPlaylist(
     identificationPlaylist: playlist.id,
     namePlaylist: playlist.name,
     imageUrlPlaylist: playlist.images.pop().url,
+  };
+}
+
+export function SpotifyAlbumtForAlbum(
+  playlist: SpotifyApi.AlbumObjectSimplified
+): IAlbums {
+  return {
+    identificationAlbum: playlist.id,
+    nameAlbum: playlist.name,
+    imageUrlAlbum: playlist.images.pop().url,
   };
 }
 
@@ -70,6 +81,33 @@ export function SpotifyTrackForMusic(
       idAlbum: spotifyTrack.album.id,
       nameAlbum: spotifyTrack.album.name,
       imageUrlAlbum: spotifyTrack.album.images.shift().url,
+    },
+    time: msToMinutes(spotifyTrack.duration_ms),
+    idMusic: spotifyTrack.id,
+  };
+}
+
+export function SpotifyTrackForAlbum(
+  spotifyTrack: SpotifyApi.TrackObjectFull
+): IMusisc {
+  if (!spotifyTrack) return newMusic();
+
+  const msToMinutes = (ms: number) => {
+    const date = addMilliseconds(new Date(0), ms);
+    return format(date, 'mm:ss');
+  };
+
+  return {
+    identifyMusic: spotifyTrack.uri,
+    titleMusic: spotifyTrack.name,
+    artistsMusic: spotifyTrack.artists.map((artist) => ({
+      identifyAM: artist.id,
+      nameAM: artist.name,
+    })),
+    album: {
+      idAlbum: '',
+      nameAlbum: '',
+      imageUrlAlbum: '',
     },
     time: msToMinutes(spotifyTrack.duration_ms),
   };

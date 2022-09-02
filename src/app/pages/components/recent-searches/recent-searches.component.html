@@ -1,11 +1,13 @@
-<input
-  type="text"
-  [(ngModel)]="fildSearch"
-  placeholder="Artistas, Musicas, Playlists"
-  (keyup.enter)="seach()"
-/>
-<div class="suggestions flex">
-  <span (click)="setSearch(research)" *ngFor="let research of recentResearch">
-    {{ research }}
-  </span>
+<div>
+  <input
+    type="search"
+    [(ngModel)]="fildSearch"
+    placeholder="Artistas, Musicas, Playlists"
+    (keyup.enter)="goToSearch(fildSearch)"
+  />
+  <div class="suggestions flex">
+    <span (click)="setSearch(research)" *ngFor="let research of recentResearch">
+      {{ research }}
+    </span>
+  </div>
 </div>

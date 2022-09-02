@@ -3,6 +3,7 @@ import { IMusisc } from './../../../interfaces/IMusic';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { newMusic } from '../../common/factories';
 import {
+  faHeart,
   faPause,
   faPlay,
   faStepBackward,
@@ -17,19 +18,22 @@ import { Subscription } from 'rxjs';
 })
 export class PlayerCardComponent implements OnInit, OnDestroy {
   music: IMusisc = newMusic();
-  subs: Subscription[];
+  subs: Subscription[] = [];
 
   // Icones
   beforeIcon = faStepBackward;
   afterIcon = faStepForward;
   pauseIcon = faPause;
   playIcon = faPlay;
+  likeIcon = faHeart;
   pausePlay: boolean;
+  likeMusicObject: string[] = [];
 
   constructor(private playerService: PlayerService) {}
 
   ngOnInit(): void {
     this.getCurrentMusic();
+    this.setMusicForLike();
   }
 
   ngOnDestroy(): void {
@@ -55,5 +59,14 @@ export class PlayerCardComponent implements OnInit, OnDestroy {
 
   nextMusic() {
     this.playerService.nextMusic();
+  }
+
+  setMusicForLike() {
+    const identifyMusic = this.music.idMusic;
+    this.likeMusicObject.push(this.music.idMusic);
+  }
+
+  likeMusic(musicID: string[]) {
+    this.playerService.addSaveMusics(musicID);
   }
 }

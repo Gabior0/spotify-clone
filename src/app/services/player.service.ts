@@ -45,4 +45,12 @@ export class PlayerService {
   async nextMusic() {
     await this.spotifyService.nextMusic();
   }
+
+  async addSaveMusics(trackID: string[]) {
+    await this.spotifyService.addSaveMusics(trackID);
+  }
+
+  async removeSaveMusics(trackID: []) {
+    await this.spotifyService.removeSaveMusics(trackID);
+  }
 }

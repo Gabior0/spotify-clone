@@ -6,8 +6,10 @@ import { Injectable } from '@angular/core';
 import Spotify from 'spotify-web-api-js';
 import {
   SportifyArtistForArtist,
+  SpotifyAlbumtForAlbum,
   SpotifyPlaylistForPlaylist,
   SpotifySinglePlaylistForPlaylist,
+  SpotifyTrackForAlbum,
   SpotifyTrackForMusic,
   SpotifyUserForUser,
 } from '../pages/common/spotifyHelper';
@@ -22,6 +24,8 @@ export class SpotifyService {
   user: IUser;
 
   pause = true;
+
+  typeSearch: [type: ['artist' | 'album' | 'playlist' | 'track']];
 
   constructor(private router: Router) {
     this.spotifyApi = new Spotify();
@@ -100,7 +104,7 @@ export class SpotifyService {
     return artist;
   }
 
-  async searchMusicsArtist(playlistId: string, offset = 0, limit = 50) {
+  async searchMusicsArtist(playlistId: string) {
     const artistTopTracks = await this.spotifyApi.getArtistTopTracks(
       playlistId,
       'US'
@@ -111,10 +115,27 @@ export class SpotifyService {
     const topTracksMusics = artistTopTracks.tracks.map((music) =>
       SpotifyTrackForMusic(music as SpotifyApi.TrackObjectFull)
     );
-    // const topTracksMusics = artistTopTracks.tracks.map.TopTracksForTracks(artistTopTracks);
     const tracks = topTracksMusics;
 
     return tracks;
+  }
+
+  async searchAlbumArtist(playlistId: string) {
+    const albumResult = await this.spotifyApi.getAlbum(playlistId);
+
+    if (!albumResult) return null;
+
+    return albumResult;
+  }
+
+  async searchMusicsAlbum(playlistId: string) {
+    const musicsResult = await this.spotifyApi.getAlbumTracks(playlistId);
+
+    if (!musicsResult) return null;
+
+    return musicsResult.items.map((music) =>
+      SpotifyTrackForAlbum(music as SpotifyApi.TrackObjectFull)
+    );
   }
 
   async searchTopArtists(limit = 10): Promise<IArtits[]> {
@@ -153,6 +174,49 @@ export class SpotifyService {
 
   async nextMusic() {
     await this.spotifyApi.skipToNext();
+  }
+
+  async addSaveMusics(trackID: string[]) {
+    await this.spotifyApi.addToMySavedTracks(trackID);
+  }
+
+  async removeSaveMusics(trackID: []) {
+    await this.spotifyApi.removeFromMySavedTracks(trackID);
+  }
+
+  async searchAlbunsForSearch(search: string, type: ['album']) {
+    const result = await this.spotifyApi.search(search, type);
+
+    const albumsResults = result.albums;
+
+    return albumsResults.items.map(SpotifyAlbumtForAlbum);
+  }
+
+  async searchMusicsForSearch(search: string, type: ['track']) {
+    const result = await this.spotifyApi.search(search, type);
+
+    const tracks = result.tracks;
+
+    return tracks.items.map((music) =>
+      SpotifyTrackForMusic(music as SpotifyApi.TrackObjectFull)
+    );
+  }
+
+  async searchPlaylistsForSearch(search: string, type: ['playlist']) {
+    const result = await this.spotifyApi.search(search, type);
+
+    const playlist = result.playlists;
+
+    return playlist.items.map(SpotifyPlaylistForPlaylist);
+  }
+
+  async searchArtistForSearch(search: string, type: ['artist']) {
+    const result = await this.spotifyApi.search(search, type);
+
+    const artist = result.artists;
+    const artistItens = artist.items[0];
+
+    return SportifyArtistForArtist(artistItens);
   }
 
   logout() {

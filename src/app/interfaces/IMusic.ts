@@ -5,10 +5,11 @@ export interface IMusisc {
     identifyAM: string;
     nameAM: string;
   }[];
-  album: {
+  album?: {
     idAlbum: string;
     nameAlbum: string;
     imageUrlAlbum: string;
   };
   time: string;
+  idMusic?: string;
 }

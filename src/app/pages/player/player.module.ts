@@ -1,3 +1,4 @@
+import { SearchComponent } from './../search/search.component';
 import { BannerComponent } from './../components/banner/banner.component';
 import { ListMusicsComponent } from './../list-musics/list-musics.component';
 import { PlayerCardComponent } from './../components/player-card/player-card.component';
@@ -33,6 +34,7 @@ import { FormsModule } from '@angular/forms';
     PlayerCardComponent,
     ListMusicsComponent,
     BannerComponent,
+    SearchComponent,
   ],
   imports: [
     CommonModule,

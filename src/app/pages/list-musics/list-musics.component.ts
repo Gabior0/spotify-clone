@@ -60,16 +60,15 @@ export class ListMusicsComponent implements OnInit, OnDestroy {
   }
 
   async getPageData(type: string, id: string) {
-    console.log(type);
     if (type == 'playlist') await this.getPlaylistData(id);
     else if (type == 'artist') {
-      // console.log('acessou');
       await this.getArtistData(id);
+    } else if (type == 'album') {
+      await this.getAlbumData(id);
     }
   }
 
   async getPlaylistData(playlistId: string) {
-    console.log('acessou');
     const playlistMusics = await this.spotifyService.searchMusicsPlaylist(
       playlistId
     );
@@ -89,9 +88,27 @@ export class ListMusicsComponent implements OnInit, OnDestroy {
     const artistImage = artist.images
       .sort((a, b) => a.width - b.width)
       .pop().url;
-    console.log(this.artists);
+
     this.setDataPage(artist.name, artistImage, playlistMusics);
     this.title = 'Musicas : ' + artist.name;
+  }
+
+  async getAlbumData(albumId: string) {
+    const albumResult = await this.spotifyService.searchAlbumArtist(albumId);
+    const MusicsAlbumResult = await this.spotifyService.searchMusicsAlbum(
+      albumId
+    );
+
+    const albumImage = albumResult.images
+      .sort((a, b) => a.width - b.width)
+      .pop().url;
+
+    for (let i = 0; i < MusicsAlbumResult.length; i++) {
+      MusicsAlbumResult[i].album.nameAlbum = albumResult.name;
+    }
+
+    this.setDataPage(albumResult.name, albumImage, MusicsAlbumResult);
+    this.title = 'Album : ' + albumResult.name;
   }
 
   setDataPage(bannerText: string, bannerImage: string, musics: IMusisc[]) {

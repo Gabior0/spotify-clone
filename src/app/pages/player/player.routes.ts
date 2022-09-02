@@ -1,3 +1,4 @@
+import { SearchComponent } from './../search/search.component';
 import { ListMusicsComponent } from './../list-musics/list-musics.component';
 import { HomeComponent } from './../home/home.component';
 import { PlayerComponent } from './player.component';
@@ -15,6 +16,10 @@ export const playerRotes: Routes = [
       {
         path: 'list/:type/:id',
         component: ListMusicsComponent,
+      },
+      {
+        path: 'search/:name',
+        component: SearchComponent,
       },
     ],
   },

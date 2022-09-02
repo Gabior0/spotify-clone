@@ -1,0 +1,82 @@
+<div>
+  <span class="title-bg">Resultados</span>
+
+  <div class="d-block list">
+    <app-banner
+      class="banner"
+      [image]="artist.imageUrlArtist"
+      [text]="artist.nameArtist"
+      (click)="goToArtists(artist.identifyArtist)"
+    ></app-banner>
+
+    <p class="name">Musicas</p>
+
+    <table class="table mt-3">
+      <thead>
+        <tr>
+          <th class="w-5"></th>
+          <th class="w-40 name"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let music of musics"
+          (click)="playMusic(music)"
+          [class.executing]="music.identifyMusic == currentSound.identifyMusic"
+        >
+          <td>
+            <fa-icon
+              class="play"
+              [icon]="playIcon"
+              [class.play]="music.identifyMusic !== currentSound.identifyMusic"
+            ></fa-icon>
+          </td>
+          <td>
+            {{ music.titleMusic }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="name">Playlists</p>
+    <table class="table mt-3">
+      <thead>
+        <tr>
+          <th class="w-5"></th>
+          <th class="w-40 name"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let playlist of playlists">
+          <td class="album">
+            <img [src]="playlist.imageUrlPlaylist" class="img" />
+          </td>
+          <td (click)="goToPlaylist(playlist.identificationPlaylist)">
+            {{ playlist.namePlaylist }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="name">Albums</p>
+    <table class="table mt-3">
+      <thead>
+        <tr>
+          <th class="w-5"></th>
+          <th class="w-40 name"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let album of albums">
+          <td class="album">
+            <img [src]="album.imageUrlAlbum" class="img" />
+          </td>
+          <td (click)="goToAlbum(album.identificationAlbum)">
+            {{ album.nameAlbum }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<app-right-board class="right-board"></app-right-board>
